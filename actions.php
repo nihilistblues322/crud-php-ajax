@@ -50,3 +50,17 @@ if (isset($_POST['addCity'])) {
     echo json_encode($res);
     die;
 }
+
+
+//get city
+if (isset($data['action']) && $data['action'] == 'get_city'){
+    $id = isset($data['id']) ? (int)$data['id'] : 0;
+    $city = $db->query("SELECT * FROM city WHERE id = ?", [$id])->find();
+    if ($city) {
+        $res = ['answer' => 'success', 'city' => $city];
+    } else {
+        $res = ['answer' => 'error'];
+    }
+    echo json_encode($res);
+    die;
+}

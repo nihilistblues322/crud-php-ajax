@@ -14,6 +14,27 @@ divTable.addEventListener('click', (e) => {
                 })
         }
     }
+    //get city for edit
+    if (e.target.classList.contains('btn-edit')) {
+        let id = +e.target.dataset.id
+        if (id) {
+            fetch('actions.php', {
+                method: 'POST',
+                body: JSON.stringify({ id: id, action: 'get_city' })
+            }).then((response) => response.json())
+                .then((data) => {
+                    if (data.answer === 'success') {
+                        document.getElementById('editName').value = data.city.name;
+                        document.getElementById('editPopulation').value = data.city.population;
+                        document.getElementById('id').value = data.city.id;
+
+
+                    }
+                })
+
+        }
+    }
+
 
 
 })
@@ -44,6 +65,45 @@ addCityForm.addEventListener('submit', (e) => {
                 }
                 btnAddSubmit.textContent = 'Save';
                 btnAddSubmit.disabled = false;
+
+            }, 1000)
+
+        })
+
+})
+
+//edit city
+
+editCityForm = document.getElementById('editCityForm');
+btnEditSubmit = document.getElementById('btn-edit-submit');
+
+editCityForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    btnEditSubmit.textContent = 'Adding';
+    btnEditSubmit.disabled = true;
+    fetch('actions.php', {
+        method: 'POST',
+        body: new FormData(editCityForm)
+    }).then((response) => response.json())
+        .then((data) => {
+            setTimeout(() => {
+                Swal.fire({
+                    icon: data.answer,
+                    title: data.answer,
+                    html: data?.errors
+
+                });
+                if (data.answer === 'success') {
+                    let idValue = document.getElementById('id').value;
+                    let nameValue = document.getElementById('editName').value;
+                    let populationValue = document.getElementById('editPopulation').value;
+                    let tr = document.getElementById(`city-${idValue}`);
+                    tr.querySelector('.city-name').innerHTML = nameValue;
+                    tr.querySelector('.city-population').innerHTML = populationValue;
+
+                }
+                btnEditSubmit.textContent = 'Save';
+                btnEditSubmit.disabled = false;
 
             }, 1000)
 
