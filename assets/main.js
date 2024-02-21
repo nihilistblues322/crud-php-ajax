@@ -75,7 +75,6 @@ divTable.addEventListener('click', (e) => {
 
 
 //add city
-
 const addCityForm = document.getElementById('addCityForm');
 const btnAddSubmit = document.getElementById('btn-add-submit');
 
@@ -108,7 +107,6 @@ addCityForm.addEventListener('submit', (e) => {
 })
 
 //edit city
-
 const editCityForm = document.getElementById('editCityForm');
 const btnEditSubmit = document.getElementById('btn-edit-submit');
 
@@ -148,7 +146,6 @@ editCityForm.addEventListener('submit', (e) => {
 
 
 //search
-
 const sField = document.getElementById('search');
 const loader = document.getElementById('loader');
 sField.addEventListener('input', (e) => {
@@ -174,3 +171,15 @@ sField.addEventListener('input', (e) => {
             })
     }
 })
+
+document.getElementById('clear-search').addEventListener('click', (e) => {
+    sField.value = '';
+    fetch('actions.php', {
+        method: 'POST',
+        body: JSON.stringify({ page: 1 })
+    }).then((response) => response.text())
+        .then((data) => {
+            divTable.innerHTML = data;
+        })
+}
+)
