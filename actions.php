@@ -96,3 +96,18 @@ if (isset($_POST['editCity'])) {
     echo json_encode($res);
     die;
 }
+
+
+//delete city
+if (isset($data['action']) && $data['action'] == 'delete_city'){
+    $id = isset($data['id']) ? (int)$data['id'] : 0;
+    $res = $db->query("DELETE FROM city WHERE id = ?", [$id]);
+    if ($res) {
+        $res = ['answer' => 'success'];
+    } else {
+        $res = ['answer' => 'error'];
+    }
+    echo json_encode($res);
+    die;
+}
+

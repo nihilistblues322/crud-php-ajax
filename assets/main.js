@@ -35,9 +35,44 @@ divTable.addEventListener('click', (e) => {
         }
     }
 
+    //delete
+    if (e.target.classList.contains('btn-delete')) {
+        let id = +e.target.dataset.id
+        if (id) {
+            fetch('actions.php', {
+                method: 'POST',
+                body: JSON.stringify({ id: id, action: 'delete_city' })
+            }).then((response) => response.json())
+                .then((data) => {
+                    if (data.answer === 'success') {
+                        setTimeout(() => {
+                            Swal.fire({
+                                icon: data.answer,
+                                title: data.answer,
+                                html: data?.errors
+
+                            });
+                            if (data.answer === 'success') {
+                                let tr = document.getElementById(`city-${id}`);
+                                tr.remove();
+                            }
+
+                        }, 1000)
+
+
+                    }
+                })
+
+        }
+    }
+
 
 
 })
+
+
+
+
 
 //add city
 
