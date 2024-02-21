@@ -88,7 +88,7 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                 Close
                             </button>
-                            <button type="button" class="btn btn-primary" id="btn-edit-submit">
+                            <button type="submit" class="btn btn-primary" id="btn-edit-submit">
                                 Save changes
                             </button>
                         </div>

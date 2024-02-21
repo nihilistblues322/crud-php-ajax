@@ -14,7 +14,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 if (isset($data['page'])) {
     $page = (int)$data['page'];
     $per_page = $config['per_page'];
-    $total = get_сount('city');
+    $total = get_count('city');
     $pagination = new Pagination((int)$page, $per_page, $total);
     $start = $pagination->get_start();
     $cities = get_cities($start, $per_page);
@@ -60,6 +60,38 @@ if (isset($data['action']) && $data['action'] == 'get_city'){
         $res = ['answer' => 'success', 'city' => $city];
     } else {
         $res = ['answer' => 'error'];
+    }
+    echo json_encode($res);
+    die;
+}
+
+// edit city
+if (isset($_POST['editCity'])) {
+    $data = $_POST;
+    $validator = new Validator();
+    $validation = $validator->validate($data, [
+        'name' => [
+            'required' => true,
+        ],
+        'population' => [
+            'minNum' => 1,
+        ],
+        'id' => [
+            'minNum' => 1,
+        ]
+    ]);
+    if ($validation->hasErrors()) {
+        $errors = '<ul class="list-unstyled text-start text-danger">';
+        foreach ($validation->getErrors() as $v) {
+            foreach ($v as $error) {
+                $errors .= "<li>{$error}</li>";
+            }
+        }
+        $errors .= '</ul>';
+        $res = ['answer' => 'error', 'errors' => $errors];
+    } else {
+        $db->query("UPDATE city SET `name`= ?, `population`= ? WHERE id = ?", [$data['name'], $data['population'], $data['id']]);
+        $res = ['answer' => 'success'];
     }
     echo json_encode($res);
     die;

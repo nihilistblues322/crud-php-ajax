@@ -98,8 +98,8 @@ editCityForm.addEventListener('submit', (e) => {
                     let nameValue = document.getElementById('editName').value;
                     let populationValue = document.getElementById('editPopulation').value;
                     let tr = document.getElementById(`city-${idValue}`);
-                    tr.querySelector('.city-name').innerHTML = nameValue;
-                    tr.querySelector('.city-population').innerHTML = populationValue;
+                    tr.querySelector('.name').innerHTML = nameValue;
+                    tr.querySelector('.population').innerHTML = populationValue;
 
                 }
                 btnEditSubmit.textContent = 'Save';
