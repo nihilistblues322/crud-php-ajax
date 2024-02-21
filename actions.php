@@ -10,6 +10,10 @@ $db = (Db::getInstance())->getConnection($config['db']);
 
 $data = json_decode(file_get_contents('php://input'), true);
 
+//search
+
+
+
 // pagination
 if (isset($data['page'])) {
     $page = (int)$data['page'];
