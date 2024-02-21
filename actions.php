@@ -11,7 +11,12 @@ $db = (Db::getInstance())->getConnection($config['db']);
 $data = json_decode(file_get_contents('php://input'), true);
 
 //search
-
+if (isset($data['search'])) {
+    $search = trim($data['search']);
+    $search_cities = search_cities($search);
+    require_once 'views/search-tpl.php';
+    die;
+}
 
 
 // pagination
@@ -57,7 +62,7 @@ if (isset($_POST['addCity'])) {
 
 
 //get city
-if (isset($data['action']) && $data['action'] == 'get_city'){
+if (isset($data['action']) && $data['action'] == 'get_city') {
     $id = isset($data['id']) ? (int)$data['id'] : 0;
     $city = $db->query("SELECT * FROM city WHERE id = ?", [$id])->find();
     if ($city) {
@@ -103,7 +108,7 @@ if (isset($_POST['editCity'])) {
 
 
 //delete city
-if (isset($data['action']) && $data['action'] == 'delete_city'){
+if (isset($data['action']) && $data['action'] == 'delete_city') {
     $id = isset($data['id']) ? (int)$data['id'] : 0;
     $res = $db->query("DELETE FROM city WHERE id = ?", [$id]);
     if ($res) {
@@ -114,4 +119,3 @@ if (isset($data['action']) && $data['action'] == 'delete_city'){
     echo json_encode($res);
     die;
 }
-

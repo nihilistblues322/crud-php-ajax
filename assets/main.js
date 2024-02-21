@@ -10,7 +10,7 @@ divTable.addEventListener('click', (e) => {
                 body: JSON.stringify({ page: page })
             }).then((response) => response.text())
                 .then((data) => {
-                    document.querySelector('.table-responsive').innerHTML = data;
+                    divTable.innerHTML = data;
                 })
         }
     }
@@ -157,10 +157,20 @@ sField.addEventListener('input', (e) => {
         fetch('actions.php', {
             method: 'POST',
             body: JSON.stringify({ search: search })
-                .then((response) => response.text())
-                .then((data) => {
-                    console.log(data);
-                })
+
         })
+            .then((response) => response.text())
+            .then((data) => {
+                loader.style.display = 'block';
+                setTimeout(() => {
+                    divTable.innerHTML = data;
+                    let instance = new Mark(divTable);
+                    instance.mark(search)
+                    loader.style.display = 'none';
+
+
+                }, 500)
+
+            })
     }
 })
